@@ -1,7 +1,2 @@
-# Ignore everything
-*
-
-# Except .txt and .py files
-!*.txt
-!*.py
-!.gitignore
+venv*/
+__pycache__/
