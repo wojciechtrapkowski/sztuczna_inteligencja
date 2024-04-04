@@ -71,3 +71,18 @@ class Connect4:
         else:
             print('now moves:', self.who_moves)
             print('possible drops:', self.possible_drops())
+    
+    def serialize(self):
+        return {
+            'board': self.board,
+            'who_moves': self.who_moves,
+            'game_over': self.game_over,
+        }
+    
+    @classmethod
+    def deserialize(cls, state_data):
+        game = cls()
+        game.board = state_data['board']
+        game.who_moves = state_data['who_moves']
+        game.game_over = state_data['game_over']
+        return game
