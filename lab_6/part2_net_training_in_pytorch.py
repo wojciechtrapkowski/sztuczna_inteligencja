@@ -35,7 +35,6 @@ def evaluate_model(model, x, y):
 
 
 def training(model, x, y):
-
     # training hiperparameters
     n_steps = 50000
     learning_rate = 0.1        # try different values
@@ -45,24 +44,33 @@ def training(model, x, y):
 
     history = []; i_step=0
 
+    optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+
     # pętla uczenia gradientowego
     for _ in range(n_steps):
 
         # TODO losowa paczka (mini-batch) danych o rozmiarze minibatch_size
         #  (użyj torch.randint do wylosowania indeksów przykładów
-        x_batch = None
-        y_batch = None
+        indices = torch.randint(low=0, high=x.size(0), size=(minibatch_size, ))
+        x_batch = x[indices]
+        y_batch = y[indices]
 
         # TODO forward pass modelu + policzenie wartości funkcji kosztu (użyj loss_fn zdefiniowanego wyżej)
-        loss = None
+        
+        y_pred = model(x_batch)
+
+        loss = loss_fn(y_pred, y_batch)
+
+        optimizer.zero_grad()
 
         # backward pass
-        for p in model.parameters():
-            p.grad = None  # gradienty są akumulowane, więc przed następnym krokiem trzeba je zresetować (specyfika pyTorch)
+        # for p in model.parameters():
+        #     p.grad = None  # gradienty są akumulowane, więc przed następnym krokiem trzeba je zresetować (specyfika pyTorch)
         loss.backward()  # autograd - policzenie gradientów metodą wstecznej propagacji - wypełnia pola .grad każdego
                          # z parametrów, który wpływa na wartość loss
 
         # TODO update params
+        optimizer.step()
 
         # track stats
         history.append(loss.log10().item())
@@ -153,7 +161,7 @@ def classify_spirals(student_id, do_data_inspection=True, do_model_inpection=Tru
 
 if __name__ == '__main__':
 
-    student_id = None         # Twój numer indeksu, np. 102247
+    student_id = 193176         # Twój numer indeksu, np. 102247
     torch.manual_seed(student_id)
 
     classify_spirals(student_id,
@@ -161,3 +169,9 @@ if __name__ == '__main__':
                      do_model_inpection=True,
                      do_model_training=True,
                      load_trained_model=False)
+
+    # classify_spirals(student_id,
+    #                  do_data_inspection=False,
+    #                  do_model_inpection=False,
+    #                  do_model_training=False,
+    #                  load_trained_model=True)

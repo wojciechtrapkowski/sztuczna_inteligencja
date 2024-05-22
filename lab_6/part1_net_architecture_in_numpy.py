@@ -81,7 +81,7 @@ def zad2_two_layer_net(student_id):
     inspect_data(x, y)
     plot_data(x, y, plot_xy_range=[-1, 2])
 
-    # warstwa czyli n_out pojedynczych, niezależnych neuronów operujących na tym samym wejściu\
+    # warstwa czyli n_out pojedynczych, niezależnych neuronów operujących na tym samym wejściu
     # (i-ty neuron ma swoje parametry w i-tej kolumnie macierzy W i na i-tej pozycji wektora b)
     class DenseLayer:
         def __init__(self, n_in, n_out, f_act):
